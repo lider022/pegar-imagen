@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pegar Imagen desde Portapapeles</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        #image-preview {
+            background-color: #fff;
+            padding: 15px;
+            width: 90%;
+            max-width: 500px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-radius: 5px;
+        }
+
+        #image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+
+        @media (min-width: 768px) {
+            #image-preview {
+                width: 70%;
+                height: 400px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            #image-preview {
+                width: 50%;
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Pega una Imagen desde el Portapapeles</h1>
+    <div id="image-preview">Pega aquí tu imagen</div>
+    
+    <script>
+        document.addEventListener('paste', function(event) {
+            var items = event.clipboardData.items;
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    var blob = items[i].getAsFile();
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        var img = document.createElement('img');
+                        img.src = event.target.result;
+                        document.getElementById('image-preview').innerHTML = '';
+                        document.getElementById('image-preview').appendChild(img);
+                    };
+                    reader.readAsDataURL(blob);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
